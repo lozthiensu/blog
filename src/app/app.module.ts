@@ -16,7 +16,6 @@ import { TagViewComponent } from './tag-view/tag-view.component';
 import { YoutubePlayerModule } from 'ng2-youtube-player';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { SearchViewComponent } from './search-view/search-view.component';
-import {APP_BASE_HREF} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -47,8 +46,7 @@ import {APP_BASE_HREF} from '@angular/common';
   ],
   providers: [
     Title,
-    UserServiceService,
-    {provide: APP_BASE_HREF, useValue: '/'}
+    UserServiceService
   ],
   entryComponents: [ LoginDialogComponent ],
   bootstrap: [AppComponent]

@@ -23,13 +23,13 @@ interface ThreadsResponse {
 }
 
 @Component({
-  selector: 'app-category-view',
-  templateUrl: './category-view.component.html',
-  styleUrls: ['./category-view.component.css'],
+  selector: 'app-search-view',
+  templateUrl: './search-view.component.html',
+  styleUrls: ['./search-view.component.css'],
   providers: [BlogServiceService]
 })
 
-export class CategoryViewComponent implements OnInit {
+export class SearchViewComponent implements OnInit {
 
   constructor(
     private _blogService: BlogServiceService,
@@ -38,14 +38,13 @@ export class CategoryViewComponent implements OnInit {
     private _route: ActivatedRoute,
     public _viewContainerRef: ViewContainerRef,
     public _dialog: MdDialog,
-    private _titleService: Title 
+    private _titleService: Title
   ) {
   }
 
   //Khai bao cac bien
   _dialogRef: MdDialogRef<LoginDialogComponent>;  //Dialog login
   listCategorys: Category[] = []; //Danh muc
-  idCategory: number; //ID cua danh muc dang xem
   threadsByPage: Observable<Thread[]>; //Danh sach bai viet
   threadsMostView: Observable<Thread[]>; //Danh sach bai viet duoc xem nhieu
   threadsMostViewThumb: Thread[] = []; //Bai viet duoc xem nhieu nhat
@@ -60,13 +59,14 @@ export class CategoryViewComponent implements OnInit {
   //Khoi tao du lieu khi xem trang web nay
   ngOnInit() {
     this._route.params.forEach((params: Params) => {
-      this.idCategory = +params['id'];
+      this.tuKhoaTim = params['string'];
+      this.tuKhoaTim = this.tuKhoaTim.replace(/-/gi, " ");
     });
     this.getThreadsByPage(1);
     this.getThreadByLastestUpdate();
     this.getListCategory();
     this._router.events.subscribe(() => {
-      window.scrollTo(0, 350);
+      window.scrollTo(0, 340);
     });
   }
 
@@ -94,6 +94,7 @@ export class CategoryViewComponent implements OnInit {
       return 0;
     this.tuKhoaTim = this.tuKhoaTim.replace(/ /gi, "-");
     this._router.navigate(['/tim-kiem/' + this.tuKhoaTim]);
+    this.getThreadsByPage(1);
     this._router.events.subscribe(() => {
       window.scrollTo(0, 340);
     });
@@ -106,11 +107,9 @@ export class CategoryViewComponent implements OnInit {
       window.scrollTo(0, 340);
     });
   }
-  
+
   //Nhay den danh muc
   xemDanhMuc(category: Category) {
-    this.idCategory = category.id;
-    this.getThreadsByPage(1);
     this._router.navigate(['/danh-muc/' + this.ChangeToSlug(category.name) + '/', category.id]);
     this._router.events.subscribe(() => {
       window.scrollTo(0, 340);
@@ -162,13 +161,13 @@ export class CategoryViewComponent implements OnInit {
 
   //Danh sach tat ca bai viet theo trang
   getThreadsByPage(page: number) {
-    this.threadsByPage = this.serverCallWithPage({ Command: "getThreads", Page: page, Category: this.idCategory, numOfItem: 7 })
+    this.threadsByPage = this.serverCallWithoutPage({ Command: "getThreadByKey", Page: page, Key: this.tuKhoaTim, numOfItem: 7 })
       .do(res => {
         this.page = page;
       })
       .map(res => res.items);
   }
-  serverCallWithPage(param: Object): Observable<ThreadsResponse> {
+  serverCallWithoutPage(param: Object): Observable<ThreadsResponse> {
     var temp: Thread[] = [];
     this._blogService.Thread(param).subscribe(
       data => {
@@ -178,7 +177,6 @@ export class CategoryViewComponent implements OnInit {
         }
         this.total = data.total;
         this.tenDanhMuc = data.tenDanhMuc;
-        this._titleService.setTitle( this.tenDanhMuc + ' - svPDU');
       },
       error => console.log("Error HTTP Post Service"),
       () => console.log("Get thread most view Done !")

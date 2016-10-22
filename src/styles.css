@@ -6,9 +6,30 @@
     padding: 0;
     margin: 0;
 }
+.md-overlay-backdrop {
+    position: fixed;
+}
+.md-overlay-pane {
+    position: fixed !important;
+}
 
+.md-input-placeholder.md-focused{
+	color: #fff;
+}
+.md-input-placeholder.md-empty {
+	color: #39772b;
+}
+.md-input-underline {
+    border-color: rgba(84, 165, 81, 0.38);
+}
+md-dialog-container {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 15px;
+    padding: 15px !important;
+}
 md-sidenav {
     width: 250px;
+    padding: 10px;
 }
 .full-Width {
     width: 100%;
@@ -367,11 +388,54 @@ li.dropdown {
 	padding:  15px !important;
  }
 .sonComment{
-	margin-left: 40px;
-	margin-top: 10px;
-	border-left: 3px #ccc solid;
-	padding:  5px !important;
-	padding-top: 20px;
-	box-shadow: none !important;
+    margin-left: 20px;
+    margin-top: 10px;
+    border-left: 3px #41a072 solid;
+    padding: 5px !important;
+    box-shadow: none !important;
     transition: none !important;
 }
+
+.buttonRepply{
+    padding: 0 0 !important; 
+    width: 50px !important;
+	min-width: 50px !important;
+}
+
+.iconLike{
+	margin-top: 5px;
+	color: #00f;
+	/*background-color: #00f;*/
+}
+
+
+
+.index-body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #4684ee;
+  overflow: hidden;
+}
+.loader {
+  color: #fff;
+  font-family: Consolas, Menlo, Monaco, monospace;
+  font-weight: bold;
+  font-size: 30vh;
+  opacity: 0.8;
+}
+.loader span {
+  display: inline-block;
+  animation: pulse 0.4s alternate infinite ease-in-out;
+}
+.loader span:nth-child(odd) {
+  animation-delay: 0.4s;
+}
+@keyframes pulse {
+  to {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+}
+

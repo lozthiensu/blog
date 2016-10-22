@@ -1,13 +1,14 @@
 <md-sidenav-layout class="mainBlog-sidenav-layout">
 	<md-toolbar>
 		<md-icon (click)="start.toggle()" class="demo-toolbar-icon">menu</md-icon>
-		<span>codeTV</span>
+		<span>svPDU</span>
 		<span class="demo-fill-remaining"></span>
 		<md-icon>code</md-icon>
 
 		<span class="example-fill-remaining-space"></span>
-
-		<button md-button (click)="getLogin()" [hidden]="_userLogin.info.id != -1">Login</button>
+		<md-input placeholder="Tìm kiếm" [(ngModel)]="tuKhoaTim" style="width: 100%; max-width: 500px; color: #fff !important;"></md-input>
+		<button md-button (click)="xemTimKiem()" ><md-icon>search</md-icon></button>
+		<button md-button (click)="openLogin()" [hidden]="_userLogin.info.id != -1">Tài khoản</button>
 
 		<button md-icon-button [md-menu-trigger-for]="menu" [hidden]="_userLogin.info.id == -1">
   			 <md-icon>more_vert</md-icon>
@@ -16,7 +17,6 @@
 			<button md-menu-item disabled> Edit info </button>
 			<button md-menu-item (click)="logout()"> Sign Out </button>
 		</md-menu>
-
 		<md-list [hidden]="_userLogin.info.id == -1">
 			<md-list-item>
 				<img md-list-avatar src="{{_userLogin.info.avatar}}" alt="{{_userLogin.info.name}}">
@@ -69,7 +69,7 @@
 					<div class="col-sm-8 parentAHref" (click)="xemBaiViet(item)">
 						<h3 md-line><a class="aHref" href="/bai-viet/{{ChangeToSlug(item.name)}}/{{item.id}}">{{item.name}}</a></h3>
 						<p md-line>
-							<md-icon>av_timer</md-icon>{{item.time}}
+							<md-icon>av_timer</md-icon><span style=" margin-top: 0px; position: absolute;">{{item.time}}</span>
 						</p>
 						<h6 md-line>
 							{{item.intro}}
@@ -98,7 +98,7 @@
 						<img (click)="xemBaiViet(item)" md-list-avatar src="{{item.imageThumb}}" alt="{{item.name}}">
 						<h3 md-line (click)="xemBaiViet(item)"><a class="aHref" href="/bai-viet/{{ChangeToSlug(item.name)}}/{{item.id}}">{{item.name}}</a></h3>
 						<p md-line (click)="xemBaiViet(item)">
-							<md-icon>av_timer</md-icon>{{item.time}}
+							<md-icon>av_timer</md-icon><span style=" margin-top: 3px; position: absolute;">{{item.time}}</span>
 						</p>
 					</md-list-item>
 				</md-list>

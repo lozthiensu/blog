@@ -1,14 +1,13 @@
 <md-sidenav-layout class="mainBlog-sidenav-layout">
 	<md-toolbar>
 		<md-icon (click)="start.toggle()" class="demo-toolbar-icon">menu</md-icon>
-		<span>codeTV</span>
+		<span>svPDU</span>
 		<span class="demo-fill-remaining"></span>
 		<md-icon>code</md-icon>
-
 		<span class="example-fill-remaining-space"></span>
-
-		<button md-button (click)="getLogin()" [hidden]="_userLogin.info.id != -1">Login</button>
-
+		<md-input placeholder="Tìm kiếm" [(ngModel)]="tuKhoaTim" style="width: 100%; max-width: 500px; color: #fff !important;"></md-input>
+		<button md-button (click)="xemTimKiem()"><md-icon>search</md-icon></button>
+		<button md-button (click)="openLogin()" [hidden]="_userLogin.info.id != -1">Tài khoản</button>
 		<button md-icon-button [md-menu-trigger-for]="menu" [hidden]="_userLogin.info.id == -1">
   			 <md-icon>more_vert</md-icon>
 		</button>
@@ -16,7 +15,6 @@
 			<button md-menu-item disabled> Edit info </button>
 			<button md-menu-item (click)="logout()"> Sign Out </button>
 		</md-menu>
-
 		<md-list [hidden]="_userLogin.info.id == -1">
 			<md-list-item>
 				<img md-list-avatar src="{{_userLogin.info.avatar}}" alt="{{_userLogin.info.name}}">
@@ -36,7 +34,6 @@
 		</span>
 		</div>
 	</md-sidenav>
-
 	<div class="demo-sidenav-content">
 		<img src="../../assets/img/logo.png" class="img-fluid full-Width" alt="Responsive image">
 		<div class="container">
@@ -61,7 +58,6 @@
 				<br>
 				<div class="titleBaiVietMoi">Danh mục: {{tenDanhMuc}}</div>
 				<br>
-
 				<div class="row listBaiVietMoi" *ngFor="let item of threadsByPage | async | paginate: { id: 'server', itemsPerPage: 7, currentPage: page, totalItems: total }">
 					<div class="col-sm-4" (click)="xemBaiViet(item)">
 						<img md-card-image src="{{item.imageThumb}}" alt="{{item.name}}">
@@ -69,7 +65,7 @@
 					<div class="col-sm-8 parentAHref" (click)="xemBaiViet(item)">
 						<h3 md-line><a class="aHref" href="/bai-viet/{{ChangeToSlug(item.name)}}/{{item.id}}">{{item.name}}</a></h3>
 						<p md-line>
-							<md-icon>av_timer</md-icon>{{item.time}}
+							<md-icon>av_timer</md-icon><span style=" margin-top: 0px; position: absolute;">{{item.time}}</span>
 						</p>
 						<h6 md-line>
 							{{item.intro}}
@@ -98,18 +94,15 @@
 						<img (click)="xemBaiViet(item)" md-list-avatar src="{{item.imageThumb}}" alt="{{item.name}}">
 						<h3 md-line (click)="xemBaiViet(item)"><a class="aHref" href="/bai-viet/{{ChangeToSlug(item.name)}}/{{item.id}}">{{item.name}}</a></h3>
 						<p md-line (click)="xemBaiViet(item)">
-							<md-icon>av_timer</md-icon>{{item.time}}
+							<md-icon>av_timer</md-icon><span style=" margin-top: 3px; position: absolute;">{{item.time}}</span>
 						</p>
 					</md-list-item>
 				</md-list>
 			</div>
 		</div>
 		<footer class="footer-distributed">
-
 			<div class="footer-left">
-
-				<h3>code<span>TV</span></h3>
-
+				<h3>sv<span>PDU</span></h3>
 				<p class="footer-links">
 					<a href="#">Home</a> ·
 					<a href="#">Blog</a> ·
@@ -118,41 +111,24 @@
 					<a href="#">Faq</a> ·
 					<a href="#">Contact</a>
 				</p>
-
-				<p class="footer-company-name">codeTV &copy; 2016</p>
+				<p class="footer-company-name">svPDU &copy; 2016</p>
 			</div>
-
 			<div class="footer-center">
-
-
 				<div>
 					<p>Liên hệ</p>
 				</div>
-
 				<div>
 					<i class="material-icons">email</i>
 					<p><span>quangbao1994@gmail.com</span></p><br>
 					<i class="material-icons">group</i>
-					<p><span>fb.com/coteTV</span></p>
+					<p><span>fb.com/svPDU</span></p>
 				</div>
-
 			</div>
-
 			<div class="footer-right">
-
 				<p class="footer-company-about">
 					<span>Thông tin</span> Website đang chạy thử nghiệm với mã nguồn xây dựng bằng Angular 2
 				</p>
-
-				<div class="footer-icons">
-
-					<!--<a href="#"><i class="fa fa-facebook"></i></a>
-						<a href="#"><i class="fa fa-github"></i></a>-->
-
-				</div>
-
 			</div>
-
 		</footer>
 	</div>
 	</div>

@@ -6,7 +6,7 @@
 		<md-icon>code</md-icon>
 		<span class="example-fill-remaining-space"></span>
 		<md-input placeholder="Tìm kiếm" [(ngModel)]="tuKhoaTim" style="width: 100%; max-width: 500px; color: #fff !important;"></md-input>
-		<button md-button (click)="xemTimKiem()"><md-icon>search</md-icon></button>
+		<button md-button (click)="xemTimKiem()" ><md-icon>search</md-icon></button>
 		<button md-button (click)="openLogin()" [hidden]="_userLogin.info.id != -1">Tài khoản</button>
 		<button md-icon-button [md-menu-trigger-for]="menu" [hidden]="_userLogin.info.id == -1">
   			 <md-icon>more_vert</md-icon>
@@ -55,68 +55,8 @@
 					</li>
 				</div>
 				<br>
-				<md-tab-group class="demo-tab-group">
-					<md-tab>
-						<template md-tab-label>Xem nhiều</template>
-						<template md-tab-content>
-							<div class="row">
-								<div class="col-md-6 col-sm-12">
-									<md-card *ngFor="let item of threadsMostViewThumb" class="parentAHref">
-										<img (click)="xemBaiViet(item)" md-card-image src="{{item.imageThumb}}" alt="{{item.name}}">
-										<md-card-content (click)="xemBaiViet(item)">
-											<h4><a class="aHref" href="/bai-viet/{{ChangeToSlug(item.name)}}/{{item.id}}">{{item.name}}</a></h4>
-											<md-icon>av_timer</md-icon><span style=" margin-top: 4px; position: absolute;">{{item.time}} - </span>
-											<md-icon style="margin-left: 145px; margin-top: 2px; position: absolute;">chat</md-icon><span style="margin-left:170px; margin-top: 4px; position: absolute;">{{item.numberOfComment}}</span>
-											<p>{{item.intro}}</p>
-										</md-card-content>
-									</md-card>
-								</div>
-								<div class="col-md-6 col-sm-12">
-									<md-list>
-										<md-list-item *ngFor="let item of threadsMostView | async " class="parentAHref">
-											<img (click)="xemBaiViet(item)" md-list-avatar src="{{item.imageThumb}}" alt="{{item.name}}">
-											<h3 (click)="xemBaiViet(item)" md-line><a class="aHref" href="/bai-viet/{{ChangeToSlug(item.name)}}/{{item.id}}">{{item.name}}</a></h3>
-											<p md-line (click)="xemBaiViet(item)">
-												<md-icon>av_timer</md-icon><span style=" margin-top: 4px; position: absolute;">{{item.time}}</span>
-											</p>
-										</md-list-item>
-									</md-list>
-								</div>
-							</div>
-						</template>
-					</md-tab>
-					<md-tab>
-						<template md-tab-label>Bình luận nhiều</template>
-						<template md-tab-content>
-							<div class="row">
-								<div class="col-md-6 col-sm-12">
-									<md-card *ngFor="let item of threadsMostCommentThumb" class="parentAHref">
-										<img (click)="xemBaiViet(item)" md-card-image src="{{item.imageThumb}}" alt="{{item.name}}">
-										<md-card-content class="parentAHref" (click)="xemBaiViet(item)">
-											<h4><a class="aHref" href="/bai-viet/{{ChangeToSlug(item.name)}}/{{item.id}}">{{item.name}}</a></h4>
-											<md-icon>av_timer</md-icon><span style=" margin-top: 4px; position: absolute;">{{item.time}} - </span>
-											<md-icon style="margin-left: 145px; margin-top: 2px; position: absolute;">chat</md-icon><span style="margin-left:170px; margin-top: 4px; position: absolute;">{{item.numberOfComment}}</span>
-											<p>{{item.intro}}</p>
-										</md-card-content>
-									</md-card>
-								</div>
-								<div class="col-md-6 col-sm-12">
-									<md-list>
-										<md-list-item *ngFor="let item of threadsMostComment | async " class="parentAHref">
-											<img (click)="xemBaiViet(item)" md-list-avatar src="{{item.imageThumb}}" alt="{{item.name}}">
-											<h3 (click)="xemBaiViet(item)" md-line><a class="aHref" href="/bai-viet/{{ChangeToSlug(item.name)}}/{{item.id}}">{{item.name}}</a></h3>
-											<p md-line (click)="xemBaiViet(item)">
-												<md-icon>av_timer</md-icon><span style=" margin-top: 4px; position: absolute;">{{item.time}}</span>
-											</p>
-										</md-list-item>
-									</md-list>
-								</div>
-							</div>
-						</template>
-					</md-tab>
-				</md-tab-group>
 				<br>
-				<div class="titleBaiVietMoi">Bài viết mới</div>
+				<div class="titleBaiVietMoi">Từ khóa: {{tuKhoaTim}}</div>
 				<br>
 				<div class="row listBaiVietMoi" *ngFor="let item of threadsByPage | async | paginate: { id: 'server', itemsPerPage: 7, currentPage: page, totalItems: total }">
 					<div class="col-sm-4" (click)="xemBaiViet(item)">

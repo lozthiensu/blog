@@ -1,0 +1,21 @@
+<md-card class="demo-card demo-basic">
+  <md-card-content>
+    <form>
+      <table style="width: 100%" cellspacing="0"><tr>
+        <td><md-input placeholder="Tài khoản" style="width: 100%"></md-input></td>
+        <td><md-input placeholder="Mật khẩu" style="width: 100%"></md-input></td>
+      </tr></table>
+      <br>
+      <table style="width: 100%" cellspacing="0"><tr>
+        <td><button md-raised-button>Đăng nhập</button></td>
+        <td><button md-raised-button>Đăng ký</button></td>
+        <td><button md-raised-button>Quên mật khẩu?</button></td>
+      </tr></table>
+      <br>
+      <table style="width: 100%" cellspacing="0"><tr>
+        <td><button (click)="getLoginFacebook()" md-raised-button style="width: 100%"><img height="30px" src="../../assets/img/fb.png"> Facebook</button></td>
+        <td><button md-raised-button style="width: 100%"><img height="30px" src="../../assets/img/gmail.png"> Google</button></td>
+      </tr></table>
+    </form>
+  </md-card-content>
+</md-card>

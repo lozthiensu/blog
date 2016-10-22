@@ -1,53 +1,74 @@
-import { ChangeDetectionStrategy, Component, OnInit, ElementRef, AfterViewInit } from '@angular/core';
+//Import modul core
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
+import { Title } from '@angular/platform-browser';
+
+//Import entity class
 import { Thread } from '../thread';
 import { Category } from '../category';
+import { User } from '../user';
+import { Comment } from '../comment';
+import { Tag } from '../tag';
+
+//Import modul material dialog
+import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
+import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
+
+//Impoer Service
 import { BlogServiceService } from '../blog-service.service';
 import { UserServiceService } from '../user-service.service';
-import { User } from '../user'
-import { Router, ActivatedRoute, Params } from '@angular/router';
-import { TrustAllHTMLPipe } from '../trust-all-html.pipe';
-import { HighlightJsService } from 'angular2-highlight-js';
-import { Tag } from '../tag';
-import { Comment } from '../comment';
 
+//Import pipe trust html
+import { TrustAllHTMLPipe } from '../trust-all-html.pipe';
+
+//Interface save thread
 interface ThreadsResponse {
   items: Thread[];
 }
+
+//Interface save comment
 interface CommentsResponse {
   items: Comment[];
 }
+
 @Component({
   selector: 'app-thread-view',
   templateUrl: './thread-view.component.html',
   styleUrls: ['./thread-view.component.css'],
   providers: [BlogServiceService, TrustAllHTMLPipe]
 })
-export class ThreadViewComponent implements OnInit, AfterViewInit {
 
-  constructor(private _blogService: BlogServiceService, private _userLogin: UserServiceService, private _router: Router, private _route: ActivatedRoute, private el: ElementRef, private service: HighlightJsService) {
-
+export class ThreadViewComponent implements OnInit {
+  constructor(
+    private _blogService: BlogServiceService,
+    private _userLogin: UserServiceService,
+    private _router: Router,
+    private _route: ActivatedRoute,
+    public _viewContainerRef: ViewContainerRef,
+    public _dialog: MdDialog,
+    private _titleService: Title
+  ) {
   }
 
-  ngAfterViewInit() {
-  }
+  //Khai bao cac bien
+  _dialogRef: MdDialogRef<LoginDialogComponent>;  //Dialog login
+  threadView: Thread[] = []; //Chua bai viet dang xem
+  tags: Tag[] = []; //Tags cua bai viet dang xem
+  listCategorys: Category[] = []; //Danh muc
+  newComment: Comment = new Comment(); //Comment moi
+  threadsByPage: Observable<Thread[]>; //Danh sach bai viet
+  threadsMostView: Observable<Thread[]>; //Danh sach bai viet duoc xem nhieu
+  threadsMostViewThumb: Thread[] = []; //Bai viet duoc xem nhieu nhat
+  threadsMostComment: Observable<Thread[]>; //Danh sach bai viet duoc comment nhieu
+  threadsMostCommentThumb: Thread[] = []; //Bai viet duoc comment nhieu nhat
+  threadsLastestUpdate: Observable<Thread[]>; //Danh sach bai viet moi duoc update
+  threadsSimilar: Observable<Thread[]>; //Danh sach bai viet cung chuyen muc
+  commentsByThread: Observable<Comment[]>; //Danh sach comment
+  idThread: number = 1; //ID cua bai viet dang xem
+  tuKhoaTim: string; //Tu khoa tim kiem
 
-  abc: string;
-  threadView: Thread[] = [];
-  tags: Tag[] = [];
-  listCategorys: Category[] = [];
-  newComment: Comment = new Comment();
-  threadsByPage: Observable<Thread[]>;
-  commentsByThread: Observable<Comment[]>;
-  threadsMostView: Observable<Thread[]>;
-  threadsMostViewThumb: Thread[] = [];
-  threadsMostComment: Observable<Thread[]>;
-  threadsMostCommentThumb: Thread[] = [];
-  threadsLastestUpdate: Observable<Thread[]>;
-  idThread: number = 1;
-  total: number;
-  loading: boolean;
-
+  //Khoi tao du lieu khi xem trang web nay
   ngOnInit() {
     this._route.params.forEach((params: Params) => {
       this.idThread = +params['id'];
@@ -56,16 +77,35 @@ export class ThreadViewComponent implements OnInit, AfterViewInit {
     this.getThreadByLastestUpdate();
     this.getListCategory();
     this.getCommentsByThread();
-    this.getLogin();
+    this.getThreadBySimilar();
     this.newComment.idParent = -1;
     this._router.events.subscribe(() => {
       window.scrollTo(0, 340);
     });
   }
 
+  //Show dialog dang nhap
+  openLogin() {
+    let config = new MdDialogConfig();
+    config.viewContainerRef = this._viewContainerRef;
+    this._dialogRef = this._dialog.open(LoginDialogComponent, config);
+    this._dialogRef.afterClosed().subscribe(result => {
+      this._dialogRef = null;
+    });
+  }
+
+  //Doan code xem video youtube chua co dinh.
   id = 'OEpsaATevxw';
+
+  //Khai bao player va cac bien boolean
   private player;
   private ytEvent;
+  videoIsPlaying: boolean = false;
+  textvideoIsPlaying: string = "Play";
+  videoIsMute: boolean = false;
+  textvideoIsMute: string = "Tắt tiếng";
+
+  //Khoi tao player youtube
   onStateChange(event) {
     this.ytEvent = event.data;
   }
@@ -73,20 +113,20 @@ export class ThreadViewComponent implements OnInit, AfterViewInit {
     this.player = player;
   }
 
+  //Tua toi player 7s
   fastBackward() {
     var currentTime = this.player.getCurrentTime();
     this.player.seekTo(currentTime - 7, true);
     this.player.playVideo();
   }
-  videoIsPlaying: boolean = false;
-  textvideoIsPlaying: string = "Play";
-  videoIsMute: boolean = false;
-  textvideoIsMute: string = "Tắt tiếng";
+  //Tua lui player 7s
   fastForward() {
     var currentTime = this.player.getCurrentTime();
     this.player.seekTo(currentTime + 7, true);
     this.player.playVideo();
   }
+
+  //Play, pause player
   playPauseVideo() {
     if (this.videoIsPlaying == false) {
       this.videoIsPlaying = true;
@@ -98,6 +138,8 @@ export class ThreadViewComponent implements OnInit, AfterViewInit {
     this.player.pauseVideo();
     this.textvideoIsPlaying = "Play";
   }
+
+  //Mute, unmute player
   muteVideo() {
     if (this.videoIsMute == false) {
       this.videoIsMute = true;
@@ -113,6 +155,17 @@ export class ThreadViewComponent implements OnInit, AfterViewInit {
   //Nhay den trang chu
   denTrangChu() {
     this._router.navigate(['']);
+    this._router.events.subscribe(() => {
+      window.scrollTo(0, 340);
+    });
+  }
+
+  //Nhay den tim kiem
+  xemTimKiem() {
+    if (this.tuKhoaTim == null || this.tuKhoaTim == "")
+      return 0;
+    this.tuKhoaTim = this.tuKhoaTim.replace(/ /gi, "-");
+    this._router.navigate(['/tim-kiem/' + this.tuKhoaTim]);
     this._router.events.subscribe(() => {
       window.scrollTo(0, 340);
     });
@@ -145,18 +198,6 @@ export class ThreadViewComponent implements OnInit, AfterViewInit {
       window.scrollTo(0, 340);
     });
 
-  }
-
-  //Dang nhap voi FB
-  getLogin() {
-    this._blogService.Login({ Command: "getCategoryList" }).subscribe(
-      data => {
-        this._userLogin.setUser(new User(data.ID, data.Name, data.Email, data.Introduce, data.Avatar, data.Level, data.OauthProvider, data.IDFaceBook, data.Status));
-        // console.log(this._userLogin.info);
-      },
-      error => console.log("Error HTTP Post Service"),
-      () => console.log("Get login Done !")
-    );
   }
 
   //Dang xuat
@@ -220,12 +261,34 @@ export class ThreadViewComponent implements OnInit, AfterViewInit {
     );
   }
 
+  //Lay danh sach bai viet lien quan
+  getThreadBySimilar() {
+    this.threadsSimilar = this.serverCallThreadByLastestUpdate({ Command: "getThreadBySimilar", IdThread: this.idThread })
+      .do(res => {
+      })
+      .map(res => res.items);
+  }
+  serverCallThreadBySimilar(param: Object): Observable<ThreadsResponse> {
+    var temp: Thread[] = [];
+    this._blogService.Thread(param).subscribe(
+      data => {
+        for (var i = 0; i < data.total; i++) {
+          temp.push(new Thread(data.items[i].Index, data.items[i].ID, data.items[i].Name, data.items[i].Intro, data.items[i].ImageThumb, data.items[i].Time, data.items[i].View, data.items[i].NumberOfComment));
+        }
+      },
+      error => console.log("Error HTTP Post Service"),
+      () => console.log("Get thread last update Done !")
+    );
+    return Observable
+      .of({
+        items: temp
+      }).delay(0);
+  }
+
   //Lay danh sach bai miet moi cap nhap
   getThreadByLastestUpdate() {
-    this.loading = true;
     this.threadsLastestUpdate = this.serverCallThreadByLastestUpdate({ Command: "getThreadByLastestUpdate" })
       .do(res => {
-        this.loading = false;
       })
       .map(res => res.items);
   }
@@ -257,6 +320,7 @@ export class ThreadViewComponent implements OnInit, AfterViewInit {
         for (var i = 0; i < array.length; i++) {
           this.tags.push(new Tag(i, array[i]));
         }
+        this._titleService.setTitle(this.threadView[0].name + ' - svPDU');
       },
       error => console.log("Error HTTP Post Service"),
       () => console.log("Get thread by id Done !")
@@ -265,10 +329,8 @@ export class ThreadViewComponent implements OnInit, AfterViewInit {
 
   //Lay danh sach comment cho bai viet dang xem
   getCommentsByThread() {
-    this.loading = true;
     this.commentsByThread = this.serverCallCommentsByThread({ Command: "getComments", IdThread: this.idThread })
       .do(res => {
-        this.loading = false;
       })
       .map(res => res.items);
   }
@@ -311,4 +373,3 @@ export class ThreadViewComponent implements OnInit, AfterViewInit {
     return slug;
   }
 }
-

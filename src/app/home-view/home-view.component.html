@@ -1,0 +1,220 @@
+<md-sidenav-layout class="mainBlog-sidenav-layout">
+	<md-toolbar>
+		<md-icon (click)="start.toggle()" class="demo-toolbar-icon">menu</md-icon>
+		<span>codeTV</span>
+		<span class="demo-fill-remaining"></span>
+		<md-icon>code</md-icon>
+
+		<span class="example-fill-remaining-space"></span>
+
+		<button md-button (click)="getLogin()" [hidden]="_userLogin.info.id != -1">Login</button>
+
+		<button md-icon-button [md-menu-trigger-for]="menu" [hidden]="_userLogin.info.id == -1">
+  			 <md-icon>more_vert</md-icon>
+		</button>
+		<md-menu #menu="mdMenu">
+			<button md-menu-item disabled> Edit info </button>
+			<button md-menu-item (click)="logout()"> Sign Out </button>
+		</md-menu>
+
+		<md-list [hidden]="_userLogin.info.id == -1">
+			<md-list-item>
+				<img md-list-avatar src="{{_userLogin.info.avatar}}" alt="{{_userLogin.info.name}}">
+				<h3 md-line>
+					<font color="white">{{_userLogin.info.name}}</font>
+				</h3>
+			</md-list-item>
+		</md-list>
+	</md-toolbar>
+	<md-sidenav #start mode="side">
+		<div style="height: 100vh; overflow: scroll;">
+			<button class="buttonSlide" md-button (click)="start.close()">Close</button>
+			<br>
+			<button class="buttonSlide"  (click)="denTrangChu()" md-raised-button color="primary">Home</button>
+			<span *ngFor="let item of listCategorys">
+			<button class="buttonSlide" (click)="xemDanhMuc(itemSon)" *ngIf="item.idParent != -1" md-raised-button color="primary" >{{item.name}}</button>	
+		</span>
+		</div>
+	</md-sidenav>
+
+	<div class="demo-sidenav-content">
+		<img src="../../assets/img/logo.png" class="img-fluid full-Width" alt="Responsive image">
+		<div class="container">
+			<br>
+			<div class="row">
+				<div class="col-lg-8 col-md-12">
+					<div class="row hidden-sm-down">
+						<button (click)="denTrangChu()" style="float:left" md-raised-button color="primary" class="dropbtn">Trang chủ</button>
+						<li class="dropdown" *ngFor="let item of listCategorys">
+							<span *ngIf="item.idParent == -1">
+								<button md-raised-button color="primary" class="dropbtn">{{item.name}}</button>
+								<div class="dropdown-content">
+									<span *ngFor="let itemSon of listCategorys">
+										<span (click)="xemDanhMuc(itemSon)" class="parentAHref"><a *ngIf="itemSon.idParent == item.id" class="aHref" href="/bai-viet/{{ChangeToSlug(itemSon.name)}}/{{itemSon.id}}">{{itemSon.name}}</a>
+										</span>
+									</span>
+								</div>
+							</span>
+						</li>
+					</div>
+					<br>
+				<md-tab-group class="demo-tab-group">
+					<md-tab>
+						<template md-tab-label>Xem nhiều</template>
+						<template md-tab-content>
+							<div class="row">
+								<div class="col-md-6 col-sm-12">
+									<md-card *ngFor="let item of threadsMostViewThumb" class="parentAHref">
+										<img (click)="xemBaiViet(item)" md-card-image src="{{item.imageThumb}}" alt="{{item.name}}">
+										<md-card-content (click)="xemBaiViet(item)">
+											<h4><a class="aHref" href="/bai-viet/{{ChangeToSlug(item.name)}}/{{item.id}}">{{item.name}}</a></h4>
+											<md-icon>av_timer</md-icon>{{item.time}} -
+											<md-icon>chat</md-icon>{{item.numberOfComment}}
+											<p>{{item.intro}}</p>
+										</md-card-content>
+									</md-card>
+								</div>
+								<div class="col-md-6 col-sm-12">
+									<md-list>
+										<md-list-item *ngFor="let item of threadsMostView | async " class="parentAHref">
+											<img (click)="xemBaiViet(item)" md-list-avatar src="{{item.imageThumb}}" alt="{{item.name}}">
+											<h3 (click)="xemBaiViet(item)" md-line><a class="aHref" href="/bai-viet/{{ChangeToSlug(item.name)}}/{{item.id}}">{{item.name}}</a></h3>
+											<p md-line (click)="xemBaiViet(item)">
+												<md-icon>av_timer</md-icon>{{item.time}}
+											</p>
+										</md-list-item>
+									</md-list>
+								</div>
+							</div>
+						</template>
+					</md-tab>
+					<md-tab>
+						<template md-tab-label>Bình luận nhiều</template>
+						<template md-tab-content>
+							<div class="row">
+								<div class="col-md-6 col-sm-12">
+									<md-card *ngFor="let item of threadsMostCommentThumb" class="parentAHref">
+										<img (click)="xemBaiViet(item)" md-card-image src="{{item.imageThumb}}" alt="{{item.name}}">
+										<md-card-content class="parentAHref" (click)="xemBaiViet(item)">
+											<h4><a class="aHref" href="/bai-viet/{{ChangeToSlug(item.name)}}/{{item.id}}">{{item.name}}</a></h4>
+											<md-icon>av_timer</md-icon>{{item.time}} -
+											<md-icon>chat</md-icon>{{item.numberOfComment}}
+											<p>{{item.intro}}</p>
+										</md-card-content>
+									</md-card>
+								</div>
+								<div class="col-md-6 col-sm-12">
+									<md-list>
+										<md-list-item *ngFor="let item of threadsMostComment | async " class="parentAHref">
+											<img (click)="xemBaiViet(item)" md-list-avatar src="{{item.imageThumb}}" alt="{{item.name}}">
+											<h3 (click)="xemBaiViet(item)" md-line><a class="aHref" href="/bai-viet/{{ChangeToSlug(item.name)}}/{{item.id}}">{{item.name}}</a></h3>
+											<p md-line (click)="xemBaiViet(item)">
+												<md-icon>av_timer</md-icon>{{item.time}}
+											</p>
+										</md-list-item>
+									</md-list>
+								</div>
+							</div>
+						</template>
+					</md-tab>
+				</md-tab-group>
+				<br>
+				<div class="titleBaiVietMoi">Bài viết mới</div>
+				<br>
+
+				<div class="row listBaiVietMoi" *ngFor="let item of threadsByPage | async | paginate: { id: 'server', itemsPerPage: 7, currentPage: page, totalItems: total }">
+					<div class="col-sm-4" (click)="xemBaiViet(item)">
+						<img md-card-image src="{{item.imageThumb}}" alt="{{item.name}}">
+					</div>
+					<div class="col-sm-8 parentAHref" (click)="xemBaiViet(item)">
+						<h3 md-line><a class="aHref" href="/bai-viet/{{ChangeToSlug(item.name)}}/{{item.id}}">{{item.name}}</a></h3>
+						<p md-line>
+							<md-icon>av_timer</md-icon>{{item.time}}
+						</p>
+						<h6 md-line>
+							{{item.intro}}
+						</h6>
+					</div>
+				</div>
+				<div class="is-text-centered ">
+					<div class="spinner" [ngClass]="{ 'hidden': !loading }"></div>
+					<pagination-controls (pageChange)="getThreadsByPage($event)" id="server"></pagination-controls>
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-12">
+				<md-card>
+					<md-card-header>
+						<img md-card-avatar src="../../assets/img/banner.png">
+						<md-card-title>
+							<h4>Quảng cáo</h4>
+						</md-card-title>
+					</md-card-header>
+					<img md-card-image src="../../assets/img/logo.png">
+				</md-card>
+				<br>
+				<div class="titleBaiVietMoi">Bài viết mới cập nhập</div>
+				<md-list>
+					<md-list-item *ngFor="let item of threadsLastestUpdate | async " class="parentAHref">
+						<img (click)="xemBaiViet(item)" md-list-avatar src="{{item.imageThumb}}" alt="{{item.name}}">
+						<h3 md-line (click)="xemBaiViet(item)"><a class="aHref" href="/bai-viet/{{ChangeToSlug(item.name)}}/{{item.id}}">{{item.name}}</a></h3>
+						<p md-line (click)="xemBaiViet(item)">
+							<md-icon>av_timer</md-icon>{{item.time}}
+						</p>
+					</md-list-item>
+				</md-list>
+			</div>
+		</div>
+		<footer class="footer-distributed">
+
+			<div class="footer-left">
+
+				<h3>code<span>TV</span></h3>
+
+				<p class="footer-links">
+					<a href="#">Home</a> ·
+					<a href="#">Blog</a> ·
+					<a href="#">Pricing</a> ·
+					<a href="#">About</a> ·
+					<a href="#">Faq</a> ·
+					<a href="#">Contact</a>
+				</p>
+
+				<p class="footer-company-name">codeTV &copy; 2016</p>
+			</div>
+
+			<div class="footer-center">
+
+
+				<div>
+					<p>Liên hệ</p>
+				</div>
+
+				<div>
+					<i class="material-icons">email</i>
+					<p><span>quangbao1994@gmail.com</span></p><br>
+					<i class="material-icons">group</i>
+					<p><span>fb.com/coteTV</span></p>
+				</div>
+
+			</div>
+
+			<div class="footer-right">
+
+				<p class="footer-company-about">
+					<span>Thông tin</span> Website đang chạy thử nghiệm với mã nguồn xây dựng bằng Angular 2
+				</p>
+
+				<div class="footer-icons">
+
+					<!--<a href="#"><i class="fa fa-facebook"></i></a>
+						<a href="#"><i class="fa fa-github"></i></a>-->
+
+				</div>
+
+			</div>
+
+		</footer>
+	</div>
+	</div>
+</md-sidenav-layout>
+<router-outlet></router-outlet>

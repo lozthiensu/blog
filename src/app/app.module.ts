@@ -17,7 +17,6 @@ import { YoutubePlayerModule } from 'ng2-youtube-player';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { SearchViewComponent } from './search-view/search-view.component';
 import {APP_BASE_HREF} from '@angular/common';
-import {PathLocationStrategy, LocationStrategy} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -49,8 +48,7 @@ import {PathLocationStrategy, LocationStrategy} from '@angular/common';
   providers: [
     Title,
     UserServiceService,
-    {provide: APP_BASE_HREF, useValue: '/'},
-    {provide: LocationStrategy, useClass: PathLocationStrategy}
+    {provide: APP_BASE_HREF, useValue: '/'}
   ],
   entryComponents: [ LoginDialogComponent ],
   bootstrap: [AppComponent]

@@ -1,40 +1,67 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+//Import modul core
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
+import { Title } from '@angular/platform-browser';
+
+
+//Import entity class
 import { Thread } from '../thread';
 import { Category } from '../category';
+import { User } from '../user';
+
+//Import modul material dialog
+import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
+import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
+
+//Impoer Service
 import { BlogServiceService } from '../blog-service.service';
 import { UserServiceService } from '../user-service.service';
-import { User } from '../user'
-import { Router, ActivatedRoute, Params} from '@angular/router';
 
+//Import cookie
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
+//Interface save thread
 interface ThreadsResponse {
   items: Thread[];
 }
+
 @Component({
   selector: 'app-tag-view',
   templateUrl: './tag-view.component.html',
   styleUrls: ['./tag-view.component.css'],
   providers: [BlogServiceService]
 })
+
 export class TagViewComponent {
 
-  constructor(private _blogService: BlogServiceService, private _userLogin: UserServiceService, private _router: Router, private _route: ActivatedRoute) {
+  constructor(
+    private _blogService: BlogServiceService,
+    private _userLogin: UserServiceService,
+    private _router: Router,
+    private _route: ActivatedRoute,
+    public _viewContainerRef: ViewContainerRef,
+    public _dialog: MdDialog,
+    private _titleService: Title
+  ) {
   }
 
-  listCategorys: Category[] = [];
-  tagKey: string;
-  threadsByPage: Observable<Thread[]>;
-  threadsMostView: Observable<Thread[]>;
-  threadsMostViewThumb: Thread[] = [];
-  threadsMostComment: Observable<Thread[]>;
-  threadsMostCommentThumb: Thread[] = [];
-  threadsLastestUpdate: Observable<Thread[]>;
-  tenDanhMuc: string;
-  page: number = 1;
-  total: number;
-  loading: boolean;
+  //Khai bao cac bien
+  _dialogRef: MdDialogRef<LoginDialogComponent>;  //Dialog login
+  listCategorys: Category[] = []; //Danh muc
+  threadsByPage: Observable<Thread[]>; //Danh sach bai viet
+  threadsMostView: Observable<Thread[]>; //Danh sach bai viet duoc xem nhieu
+  threadsMostViewThumb: Thread[] = []; //Bai viet duoc xem nhieu nhat
+  threadsMostComment: Observable<Thread[]>; //Danh sach bai viet duoc comment nhieu
+  threadsMostCommentThumb: Thread[] = []; //Bai viet duoc comment nhieu nhat
+  threadsLastestUpdate: Observable<Thread[]>; //Danh sach bai viet moi duoc update
+  tenDanhMuc: string; //Ten cua danh muc dang xem
+  page: number = 1; //So trang cua danh sach bai viet
+  total: number;  //Tong so bai viet cua danh sach bai viet
+  tagKey: string; //Tu khoa tim kiem
+  tuKhoaTim: string; //Tu khoa tim kiem
 
+  //Khoi tao du lieu khi xem trang web nay
   ngOnInit() {
     this._route.params.forEach((params: Params) => {
       this.tagKey = params['string'];
@@ -46,8 +73,70 @@ export class TagViewComponent {
     this._router.events.subscribe(() => {
       window.scrollTo(0, 340);
     });
+    this._titleService.setTitle(this.tagKey + ' - svPDU');
   }
 
+  //Show dialog dang nhap
+  openLogin() {
+    let config = new MdDialogConfig();
+    config.viewContainerRef = this._viewContainerRef;
+    this._dialogRef = this._dialog.open(LoginDialogComponent, config);
+    this._dialogRef.afterClosed().subscribe(result => {
+      this._dialogRef = null;
+    });
+  }
+
+  //Nhay den trang chu
+  denTrangChu() {
+    this._router.navigate(['']);
+    this._router.events.subscribe(() => {
+      window.scrollTo(0, 340);
+    });
+  }
+
+  //Nhay den tim kiem
+  xemTimKiem() {
+    if (this.tuKhoaTim == null || this.tuKhoaTim == "")
+      return 0;
+    this.tuKhoaTim = this.tuKhoaTim.replace(/ /gi, "-");
+    this._router.navigate(['/tim-kiem/' + this.tuKhoaTim]);
+    this.getThreadsByPage(1);
+    this._router.events.subscribe(() => {
+      window.scrollTo(0, 340);
+    });
+  }
+
+  //Nhay den xem bai viet
+  xemBaiViet(thread: Thread) {
+    this._router.navigate(['/bai-viet/' + this.ChangeToSlug(thread.name) + '/', thread.id]);
+    this._router.events.subscribe(() => {
+      window.scrollTo(0, 340);
+    });
+  }
+
+  //Nhay den danh muc
+  xemDanhMuc(category: Category) {
+    this._router.navigate(['/danh-muc/' + this.ChangeToSlug(category.name) + '/', category.id]);
+    this._router.events.subscribe(() => {
+      window.scrollTo(0, 340);
+    });
+  }
+
+  //Dang xuat
+  logout() {
+    let myCookie = Cookie.get('userTokent');
+    this._blogService.Login({ Command: "logout", Tokent: myCookie }).subscribe(
+      data => {
+        this._userLogin.clearUser();
+        Cookie.delete('userTokent');
+        Cookie.delete('userSocial');
+      },
+      error => console.log("Error HTTP Post Service"),
+      () => console.log("Get login Done !")
+    );
+  }
+
+  //Lay danh sach the loai
   getListCategory() {
     this._blogService.Category({ Command: "getCategoryList" }).subscribe(
       data => {
@@ -61,43 +150,10 @@ export class TagViewComponent {
     );
   }
 
-  denTrangChu() {
-    this._router.navigate(['']);
-    this._router.events.subscribe(() => {
-      window.scrollTo(0, 340);
-    });
-  }
-
-  xemBaiViet(thread: Thread) {
-    this._router.navigate(['/bai-viet/' + this.ChangeToSlug(thread.name) + '/', thread.id]);
-    this._router.events.subscribe(() => {
-      window.scrollTo(0, 340);
-    });
-  }
-  xemDanhMuc(category: Category) {
-    this._router.navigate(['/danh-muc/' + this.ChangeToSlug(category.name) + '/', category.id]);
-    this._router.events.subscribe(() => {
-      window.scrollTo(0, 340);
-    });
-  }
-  getLogin() {
-    this._blogService.Login({ Command: "getCategoryList" }).subscribe(
-      data => {
-        this._userLogin.setUser(new User(data.ID, data.Name, data.Email, data.Introduce, data.Avatar, data.Level, data.OauthProvider, data.IDFaceBook, data.Status));
-      },
-      error => console.log("Error HTTP Post Service"),
-      () => console.log("Get thread most view Done !")
-    );
-  }
-  logout() {
-    this._userLogin.clearUser();
-  }
-
+  //Lay danh sach bai miet moi cap nhap
   getThreadByLastestUpdate() {
-    this.loading = true;
     this.threadsLastestUpdate = this.serverCallThreadByLastestUpdate({ Command: "getThreadByLastestUpdate" })
       .do(res => {
-        this.loading = false;
       })
       .map(res => res.items);
   }
@@ -118,12 +174,11 @@ export class TagViewComponent {
       }).delay(0);
   }
 
+  //Danh sach tat ca bai viet theo trang
   getThreadsByPage(page: number) {
-    this.loading = true;
     this.threadsByPage = this.serverCallWithoutPage({ Command: "getThreadByTag", Page: page, Tag: this.tagKey, numOfItem: 7 })
       .do(res => {
         this.page = page;
-        this.loading = false;
       })
       .map(res => res.items);
   }
@@ -148,6 +203,7 @@ export class TagViewComponent {
       }).delay(0);
   }
 
+  //Chuyen thanh url khong dau
   ChangeToSlug(param: string) {
     var slug;
     slug = param.toLowerCase();

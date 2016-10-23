@@ -439,3 +439,7 @@ li.dropdown {
   }
 }
 
+snack-bar-container {
+    height: 50px !important; 
+}
+

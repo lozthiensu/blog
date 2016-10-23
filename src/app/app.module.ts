@@ -2,18 +2,20 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { RouterModule } from '@angular/router';
 
-import { AppComponent } from './app.component';
+import { UserServiceService } from './user-service.service';
+import { TrustAllHTMLPipe } from './trust-all-html.pipe';
+
 import { MaterialModule } from '@angular/material';
 import { Ng2PaginationModule } from 'ng2-pagination';
-import { UserServiceService } from './user-service.service';
-import { RouterModule } from '@angular/router';
+import { YoutubePlayerModule } from 'ng2-youtube-player';
+
+import { AppComponent } from './app.component';
 import { ThreadViewComponent } from './thread-view/thread-view.component';
 import { HomeViewComponent } from './home-view/home-view.component';
-import { TrustAllHTMLPipe } from './trust-all-html.pipe';
 import { CategoryViewComponent } from './category-view/category-view.component';
 import { TagViewComponent } from './tag-view/tag-view.component';
-import { YoutubePlayerModule } from 'ng2-youtube-player';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { SearchViewComponent } from './search-view/search-view.component';
 
@@ -39,8 +41,8 @@ import { SearchViewComponent } from './search-view/search-view.component';
       { path: 'danh-muc/:string/:id', component: CategoryViewComponent },
       { path: 'tag/:string', component: TagViewComponent },
       { path: 'tim-kiem/:string', component: SearchViewComponent },
-      { path: '', component: HomeViewComponent },//home
-      { path: '**', component: AppComponent }//notfound
+      { path: '', component: HomeViewComponent },
+      { path: '**', component: AppComponent }
     ]),
     YoutubePlayerModule
   ],

@@ -27,11 +27,13 @@
     "core-js": "^2.4.1",
     "hammerjs": "^2.0.8",
     "ng2-pagination": "^0.5.1",
+    "ng2-recaptcha": "^1.3.2",
     "rxjs": "5.0.0-beta.12",
     "ts-helpers": "^1.1.1",
     "zone.js": "^0.6.23"
   },
   "devDependencies": {
+    "@types/grecaptcha": "^2.0.30",
     "@types/jasmine": "^2.2.30",
     "angular-cli": "1.0.0-beta.16",
     "codelyzer": "~0.0.26",

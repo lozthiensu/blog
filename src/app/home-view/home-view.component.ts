@@ -17,6 +17,9 @@ import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import { BlogServiceService } from '../blog-service.service';
 import { UserServiceService } from '../user-service.service';
 
+//Import cookie
+import { Cookie } from 'ng2-cookies/ng2-cookies';
+
 //Interface save thread
 interface ThreadsResponse {
   items: Thread[];
@@ -124,7 +127,16 @@ export class HomeViewComponent implements OnInit {
 
   //Dang xuat
   logout() {
-    this._userLogin.clearUser();
+    let myCookie = Cookie.get('userTokent');
+    this._blogService.Login({ Command: "logout", Tokent: myCookie }).subscribe(
+      data => {
+        this._userLogin.clearUser();
+        Cookie.delete('userTokent');
+        Cookie.delete('userSocial');
+      },
+      error => console.log("Error HTTP Post Service"),
+      () => console.log("Get login Done !")
+    );
   }
 
   //Danh sach bai viet duoc xem nhieu nhat

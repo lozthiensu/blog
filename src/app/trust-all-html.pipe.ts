@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl, SafeUrl, SafeHtml} from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl, SafeHtml} from '@angular/platform-browser';
 
 @Pipe({
   name: 'trustAllHTML'

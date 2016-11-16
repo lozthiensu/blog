@@ -1,6 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/core/theming/prebuilt/indigo-pink.css';
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+
+
+
 .mainBlog-sidenav-layout{
     height: 100%;
     padding: 0;
@@ -12,7 +15,10 @@
 .md-overlay-pane {
     position: fixed !important;
 }
-
+md-card > md-card-actions:last-child {
+    margin-bottom: 0px; 
+    padding-bottom: 0;
+}
 .md-input-placeholder.md-focused{
 	color: #fff;
 }
@@ -35,10 +41,14 @@ md-sidenav {
     width: 100%;
     margin-top: -30px;
 }
+.new-logo-Width {
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
 
 md-toolbar {
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.8);
+    color: #000;
+    /*background-color: rgba(0, 0, 0, 0.8);*/
     position: absolute;
 }
 
@@ -74,7 +84,7 @@ li {
 li a, .dropbtn {
     display: inline-block;
     text-align: center;
-    padding: 14px 16px;
+    padding: 5px 5px;
     text-decoration: none;
 }
 
@@ -91,7 +101,7 @@ li.dropdown {
     position: absolute;
     z-index: 999;
     background-color: #f9f9f9;
-    min-width: 160px;
+    min-width: 250px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
@@ -110,14 +120,15 @@ li.dropdown {
 
 
 .footer-distributed{
-	/*background-color: #292c2f;*/
-	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
+
+	background-color: #262626;
+	/*box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);*/
 	box-sizing: border-box;
 	width: 100%;
 	text-align: left;
 	font: bold 16px sans-serif;
-	padding: 55px 50px;
-	/*margin-top: 80px;*/
+	padding: 20px 50px;
+	margin-top: 50px;
 }
 
 .footer-distributed .footer-left,
@@ -136,7 +147,7 @@ li.dropdown {
 /* The company logo */
 
 .footer-distributed h3{
-	color:  #000;
+	color:  #fff;
 	font: normal 36px 'Cookie', cursive;
 	margin: 0;
 }
@@ -161,7 +172,7 @@ li.dropdown {
 }
 
 .footer-distributed .footer-company-name{
-	color:  #8f9296;
+	color:  #fff;
 	font-size: 14px;
 	font-weight: normal;
 	margin: 0;
@@ -175,7 +186,7 @@ li.dropdown {
 
 .footer-distributed .footer-center i{
 	background-color:  #33383b;
-	color: #000;
+	color: #8f9296;
 	font-size: 25px;
 	width: 38px;
 	height: 38px;
@@ -193,13 +204,14 @@ li.dropdown {
 
 .footer-distributed .footer-center p{
 	display: inline-block;
-	color: #000;
+	color: #8f9296;
 	vertical-align: middle;
 	margin:0;
 }
 
 .footer-distributed .footer-center p span{
 	display:block;
+	color: #fff;
 	font-weight: normal;
 	font-size:14px;
 	line-height:2;
@@ -216,10 +228,12 @@ li.dropdown {
 .footer-distributed .footer-right{
 	width: 20%;
 }
-
+h1 {
+    font-size: 2.074em;
+}
 .footer-distributed .footer-company-about{
 	line-height: 20px;
-	color:  #92999f;
+	color:  #fff;
 	font-size: 13px;
 	font-weight: normal;
 	margin: 0;
@@ -227,7 +241,7 @@ li.dropdown {
 
 .footer-distributed .footer-company-about span{
 	display: block;
-	color:  #000;
+	color:  #92999f;
 	font-size: 14px;
 	font-weight: bold;
 	margin-bottom: 20px;
@@ -289,6 +303,12 @@ li.dropdown {
 }
 
 
+.aHref-dropdown{
+    z-index:-1;
+    position:relative;
+	border-bottom: 1px solid #ccc;
+	/*color: #45abf9 !important;*/
+}
 .aHref{
     z-index:-1;
     position:relative;
@@ -382,16 +402,16 @@ li.dropdown {
 	background-color: #7bc4f2;
 }
 
-.parentComment{
- 	margin-top: 10px;
-	border-top: 3px #42b3f4 solid;
-	padding:  15px !important;
- }
+.parentComment {
+    margin-top: 25px;
+    /* border-top: 1px #ccc solid; */
+    padding: 0px 15px !important;
+}
 .sonComment{
     margin-left: 20px;
-    margin-top: 10px;
-    border-left: 3px #41a072 solid;
-    padding: 5px !important;
+    margin-top: 15px;
+    border-left: 3px #42b3f4 solid;
+    padding: 0px 5px !important;
     box-shadow: none !important;
     transition: none !important;
 }
@@ -403,7 +423,7 @@ li.dropdown {
 }
 
 .iconLike{
-	margin-top: 5px;
+	margin-top: 2px;
 	color: #00f;
 	/*background-color: #00f;*/
 }
@@ -415,7 +435,7 @@ li.dropdown {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #4684ee;
+  /*background-color: #000;*/
   overflow: hidden;
 }
 .loader {
@@ -443,3 +463,275 @@ snack-bar-container {
     height: 50px !important; 
 }
 
+md-toolbar {
+    color: #000;
+    background-color: rgba(255, 255, 255, 1);
+    -webkit-box-shadow: 0px 2px 10px 0px rgba(50, 50, 50, 0.5);
+    -moz-box-shadow: 0px 2px 10px 0px rgba(50, 50, 50, 0.5);
+    box-shadow: 0px 2px 10px 0px rgba(50, 50, 50, 0.5);
+}
+
+md-toolbar md-toolbar-row {
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+.iconDownMenu{
+	margin-top: 5px;
+	color: #fff;
+	/*background-color: #00f;*/
+}
+
+
+.button-dropdown-menu {
+    padding: 5px 0 !important;
+}
+.md-list-item {
+    padding: 0 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.centerBlock {
+  display: table;
+  margin: 0 auto;
+}
+
+.cssload-cssload-wrap2 {
+	width: 431px;
+	height: 431px;
+	overflow: hidden;
+}
+.cssload-wrap {
+	position: absolute;
+	width: 288px;
+	height: 288px;
+	left: 50%;
+	top: 50%;
+	margin-top: -144px;
+	margin-left: -144px;
+	transform: scale(2);
+		-o-transform: scale(2);
+		-ms-transform: scale(2);
+		-webkit-transform: scale(2);
+		-moz-transform: scale(2);
+}
+.cssload-wrap .cssload-overlay {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 100;
+	box-shadow: 0 0 72px 109px rgb(255,255,255) inset;
+		-o-box-shadow: 0 0 72px 109px rgb(255,255,255) inset;
+		-ms-box-shadow: 0 0 72px 109px rgb(255,255,255) inset;
+		-webkit-box-shadow: 0 0 72px 109px rgb(255,255,255) inset;
+		-moz-box-shadow: 0 0 72px 109px rgb(255,255,255) inset;
+}
+.cssload-wrap .cssload-cogWheel {
+	position: absolute;
+	top: 50%;
+	margin-top: -72px;
+	width: 144px;
+	height: 144px;
+}
+.cssload-wrap .cssload-cogWheel.cssload-one {
+	left: -18.25px;
+	animation: cssload-rotLeft 1.15s infinite linear;
+		-o-animation: cssload-rotLeft 1.15s infinite linear;
+		-ms-animation: cssload-rotLeft 1.15s infinite linear;
+		-webkit-animation: cssload-rotLeft 1.15s infinite linear;
+		-moz-animation: cssload-rotLeft 1.15s infinite linear;
+}
+.cssload-wrap .cssload-cogWheel.cssload-one .cssload-one:before {
+	border: none;
+}
+.cssload-wrap .cssload-cogWheel.cssload-two {
+	right: -18.25px;
+	margin-top: -69px;
+	transform: rotate(196deg);
+		-o-transform: rotate(196deg);
+		-ms-transform: rotate(196deg);
+		-webkit-transform: rotate(196deg);
+		-moz-transform: rotate(196deg);
+	animation: cssload-rotRight 1.15s infinite linear;
+		-o-animation: cssload-rotRight 1.15s infinite linear;
+		-ms-animation: cssload-rotRight 1.15s infinite linear;
+		-webkit-animation: cssload-rotRight 1.15s infinite linear;
+		-moz-animation: cssload-rotRight 1.15s infinite linear;
+}
+.cssload-wrap .cssload-cogWheel.cssload-two .cssload-one:before {
+	border: none;
+}
+.cssload-wrap .cssload-cogWheel .cssload-cog {
+	position: absolute;
+	width: 100%;
+	left: 0;
+	top: 50%;
+}
+.cssload-wrap .cssload-cogWheel .cssload-cog:after {
+	display: block;
+	position: absolute;
+	content: ' ';
+	border: 6px solid rgb(0,0,0);
+	border-left: none;
+	height: 26px;
+	width: 14px;
+	right: -26px;
+	top: -12px;
+}
+.cssload-wrap .cssload-cogWheel .cssload-cog:before {
+	display: block;
+	position: absolute;
+	content: ' ';
+	border-left: 6px solid rgb(0,0,0);
+	height: 29px;
+	width: 12px;
+	right: -17px;
+	top: -37px;
+	transform: rotate(-20deg);
+		-o-transform: rotate(-20deg);
+		-ms-transform: rotate(-20deg);
+		-webkit-transform: rotate(-20deg);
+		-moz-transform: rotate(-20deg);
+}
+.cssload-wrap .cssload-cogWheel .cssload-cog.cssload-one {
+	transform: rotate(-80deg);
+		-o-transform: rotate(-80deg);
+		-ms-transform: rotate(-80deg);
+		-webkit-transform: rotate(-80deg);
+		-moz-transform: rotate(-80deg);
+}
+.cssload-wrap .cssload-cogWheel .cssload-cog.cssload-two {
+	transform: rotate(-40deg);
+		-o-transform: rotate(-40deg);
+		-ms-transform: rotate(-40deg);
+		-webkit-transform: rotate(-40deg);
+		-moz-transform: rotate(-40deg);
+}
+.cssload-wrap .cssload-cogWheel .cssload-cog.cssload-three {
+	transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		-webkit-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+}
+.cssload-wrap .cssload-cogWheel .cssload-cog.cssload-four {
+	transform: rotate(40deg);
+		-o-transform: rotate(40deg);
+		-ms-transform: rotate(40deg);
+		-webkit-transform: rotate(40deg);
+		-moz-transform: rotate(40deg);
+}
+.cssload-wrap .cssload-cogWheel .cssload-cog.cssload-five {
+	transform: rotate(80deg);
+		-o-transform: rotate(80deg);
+		-ms-transform: rotate(80deg);
+		-webkit-transform: rotate(80deg);
+		-moz-transform: rotate(80deg);
+}
+
+
+
+
+
+@keyframes cssload-rotLeft {
+	from {
+		transform: rotate(-30deg);
+	}
+	to {
+		transform: rotate(10deg);
+	}
+}
+
+@-o-keyframes cssload-rotLeft {
+	from {
+		transform: rotate(-30deg);
+	}
+	to {
+		transform: rotate(10deg);
+	}
+}
+
+@-ms-keyframes cssload-rotLeft {
+	from {
+		transform: rotate(-30deg);
+	}
+	to {
+		transform: rotate(10deg);
+	}
+}
+
+@-webkit-keyframes cssload-rotLeft {
+	from {
+		transform: rotate(-30deg);
+	}
+	to {
+		transform: rotate(10deg);
+	}
+}
+
+@-moz-keyframes cssload-rotLeft {
+	from {
+		transform: rotate(-30deg);
+	}
+	to {
+		transform: rotate(10deg);
+	}
+}
+
+@keyframes cssload-rotRight {
+	from {
+		transform: rotate(-174deg);
+	}
+	to {
+		transform: rotate(-214deg);
+	}
+}
+
+@-o-keyframes cssload-rotRight {
+	from {
+		transform: rotate(-174deg);
+	}
+	to {
+		transform: rotate(-214deg);
+	}
+}
+
+@-ms-keyframes cssload-rotRight {
+	from {
+		transform: rotate(-174deg);
+	}
+	to {
+		transform: rotate(-214deg);
+	}
+}
+
+@-webkit-keyframes cssload-rotRight {
+	from {
+		transform: rotate(-174deg);
+	}
+	to {
+		transform: rotate(-214deg);
+	}
+}
+
+@-moz-keyframes cssload-rotRight {
+	from {
+		transform: rotate(-174deg);
+	}
+	to {
+		transform: rotate(-214deg);
+	}
+}

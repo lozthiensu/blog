@@ -60,12 +60,18 @@ export class HomeViewComponent implements OnInit {
 
   //Khoi tao du lieu khi xem trang web nay
   ngOnInit() {
+    this._blogService.Setting().subscribe(
+      data => {
+        this._titleService.setTitle(data.Full);
+      },
+      error => console.log("Error HTTP Post Service"),
+      () => console.log("Get title setting done !")
+    );
     this.getThreadsByPage(1);
     this.getThreadsByMostView();
     this.getThreadsByMostComment();
     this.getThreadByLastestUpdate();
     this.getListCategory();
-    this._titleService.setTitle('svPDU Blog - Lập trình');
   }
 
   //Show dialog dang nhap
@@ -254,7 +260,7 @@ export class HomeViewComponent implements OnInit {
     slug = slug.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, 'u');
     slug = slug.replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, 'y');
     slug = slug.replace(/đ/gi, 'd');
-    slug = slug.replace(/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi, '');
+    slug = slug.replace(/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|\[|\]|\{|\}|_/gi, '');
     slug = slug.replace(/ /gi, "-");
     slug = slug.replace(/\-\-\-\-\-/gi, '-');
     slug = slug.replace(/\-\-\-\-/gi, '-');

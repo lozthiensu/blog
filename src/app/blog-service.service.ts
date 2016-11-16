@@ -9,9 +9,17 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class BlogServiceService {
   constructor(private _http: Http) { }
-  private commentsUrl = 'http://svpdu.net/blogAPI/';
+  private commentsUrl = 'http://codew.net/blogAPI/';
   // private commentsUrl = 'http://localhost/blogAPI/';
 
+  Setting() {
+    let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(this.commentsUrl + 'getTitle.php', null, options)
+      .map(res => res.json())
+      .catch(this.handleError);
+  }
+  
   Thread(body: Object) {
     let bodyString = JSON.stringify(body);
     let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });

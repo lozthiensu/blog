@@ -13,7 +13,8 @@ export class Thread {
     categoryName: string;
     author: string;
     authorAvatar: string;
-    constructor(index?: number, id?: number, name?: string, intro?: string, imageThumb?: string, time?: string, view?: number, numberOfComment?: number, content?: string, tag?: string, category?: number, categoryName?: string, author?: string, authorAvatar?: string){
+    authorIntroduce: string;
+    constructor(index?: number, id?: number, name?: string, intro?: string, imageThumb?: string, time?: string, view?: number, numberOfComment?: number, content?: string, tag?: string, category?: number, categoryName?: string, author?: string, authorAvatar?: string, authorIntroduce?: string){
         this.index = index;
         this.id = id;
         this.name = name;
@@ -28,5 +29,6 @@ export class Thread {
         this.authorAvatar = authorAvatar;
         this.imageThumb = imageThumb;
         this.numberOfComment = numberOfComment;
+        this.authorIntroduce = authorIntroduce;
     }
 }

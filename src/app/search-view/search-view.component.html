@@ -1,12 +1,11 @@
 <md-sidenav-layout class="mainBlog-sidenav-layout">
 	<md-toolbar>
 		<md-icon (click)="start.toggle()" class="demo-toolbar-icon">menu</md-icon>
-		<span>svPDU</span>
-		<span class="demo-fill-remaining"></span>
-		<md-icon>code</md-icon>
+		<span style="width: 30px;"></span>
+		<img (click)="start.toggle()" src="../../assets/img/logo-header.png" class="img-fluid hidden-sm-down" alt="Responsive image">
 		<span class="example-fill-remaining-space"></span>
 		<md-input placeholder="Tìm kiếm" [(ngModel)]="tuKhoaTim" style="width: 100%; max-width: 500px; color: #fff !important;"></md-input>
-		<button md-button (click)="xemTimKiem()" ><md-icon>search</md-icon></button>
+		<button md-button class="buttonRepply" (click)="xemTimKiem()"><md-icon>search</md-icon></button>
 		<button md-button (click)="openLogin()" [hidden]="_userLogin.info.id != -1">Tài khoản</button>
 		<button md-icon-button [md-menu-trigger-for]="menu" [hidden]="_userLogin.info.id == -1">
   			 <md-icon>more_vert</md-icon>
@@ -19,42 +18,43 @@
 			<md-list-item>
 				<img md-list-avatar src="{{_userLogin.info.avatar}}" alt="{{_userLogin.info.name}}">
 				<h3 md-line>
-					<font color="white">{{_userLogin.info.name}}</font>
+					<font>{{_userLogin.info.name}}</font>
 				</h3>
 			</md-list-item>
 		</md-list>
 	</md-toolbar>
 	<md-sidenav #start>
-		<div style="height: 100vh; overflow: scroll;">
+		<div style="height: 100%; overflow: scroll;">
 			<button class="buttonSlide" md-button (click)="start.close()">Close</button>
 			<br>
 			<button class="buttonSlide" (click)="denTrangChu()" md-raised-button color="primary">Home</button>
 			<span *ngFor="let item of listCategorys">
-			<button class="buttonSlide" (click)="xemDanhMuc(itemSon)" *ngIf="item.idParent != -1" md-raised-button color="primary" >{{item.name}}</button>	
+			<button class="buttonSlide" (click)="xemDanhMuc(item)" *ngIf="item.idParent != -1" md-raised-button color="primary" >{{item.name}}</button>	
 		</span>
 		</div>
 	</md-sidenav>
 	<div class="demo-sidenav-content">
-		<img src="../../assets/img/logo.png" class="img-fluid full-Width" alt="Responsive image">
 		<div class="container">
+			<br><br>
 			<br>
-			<div class="row">
-				<div class="col-lg-8 col-md-12">
-					<div class="row hidden-sm-down">
-						<button (click)="denTrangChu()" style="float:left" md-raised-button color="primary" class="dropbtn">Trang chủ</button>
-						<li class="dropdown" *ngFor="let item of listCategorys">
-							<span *ngIf="item.idParent == -1">
-								<button md-raised-button color="primary" class="dropbtn">{{item.name}}</button>
+			<br>
+			<div class="row col-md-12 hidden-sm-down">
+				<button (click)="denTrangChu()" style="float:left" md-raised-button color="primary" class="dropbtn button-dropdown-menu"><div style=" float: left; margin-left: 5px; margin-top: 2px;">Trang chủ </div><md-icon class="md-12 iconDownMenu">home</md-icon></button>
+				<li class="dropdown" *ngFor="let item of listCategorys">
+					<span *ngIf="item.idParent == -1">
+								<button md-raised-button color="primary" class="dropbtn button-dropdown-menu"><div style=" float: left; margin-left: 5px; margin-top: 2px;">{{item.name}} </div><md-icon class="md-12 iconDownMenu">arrow_drop_down</md-icon></button>
 								<div class="dropdown-content">
-									<span *ngFor="let itemSon of listCategorys">
-										<span (click)="xemDanhMuc(itemSon)" class="parentAHref"><a *ngIf="itemSon.idParent == item.id" class="aHref" href="/bai-viet/{{ChangeToSlug(itemSon.name)}}/{{itemSon.id}}">{{itemSon.name}}</a>
+									<span class="abcA" *ngFor="let itemSon of listCategorys">
+										<span (click)="xemDanhMuc(itemSon)" class="parentAHref"><a *ngIf="itemSon.idParent == item.id" class="aHref-dropdown" href="/bai-viet/{{ChangeToSlug(itemSon.name)}}/{{itemSon.id}}">{{itemSon.name}}</a>
 										</span>
-							</span>
-					</div>
 					</span>
-					</li>
-				</div>
-				<br>
+			</div>
+			</span>
+			</li>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-lg-8 col-md-12">
 				<br>
 				<div class="titleBaiVietMoi">Từ khóa: {{tuKhoaTim}}</div>
 				<br>
@@ -82,13 +82,14 @@
 					<md-card-header>
 						<img md-card-avatar src="../../assets/img/banner.png">
 						<md-card-title>
-							<h4>Quảng cáo</h4>
+							<h6>Quảng cáo</h6>
 						</md-card-title>
+						<md-card-subtitle>Liên hệ: admin@codeW.net</md-card-subtitle>
 					</md-card-header>
-					<img md-card-image src="../../assets/img/logo.png">
+					<img md-card-image src="../../assets/img/quangcao.png">
 				</md-card>
 				<br>
-				<div class="titleBaiVietMoi">Bài viết mới cập nhập</div>
+				<div class="titleBaiVietMoi">Mới cập nhập</div>
 				<md-list>
 					<md-list-item *ngFor="let item of threadsLastestUpdate | async " class="parentAHref">
 						<img (click)="xemBaiViet(item)" md-list-avatar src="{{item.imageThumb}}" alt="{{item.name}}">
@@ -100,28 +101,21 @@
 				</md-list>
 			</div>
 		</div>
-		<footer class="footer-distributed">
+	</div>
+	<footer class="footer-distributed">
+		<div class="container">
+
 			<div class="footer-left">
-				<h3>sv<span>PDU</span></h3>
-				<p class="footer-links">
-					<a href="#">Home</a> ·
-					<a href="#">Blog</a> ·
-					<a href="#">Pricing</a> ·
-					<a href="#">About</a> ·
-					<a href="#">Faq</a> ·
-					<a href="#">Contact</a>
-				</p>
-				<p class="footer-company-name">svPDU &copy; 2016</p>
+				<h3>code<span>W</span></h3>
+				<p class="footer-company-name">codeW &copy; 2016</p>
 			</div>
 			<div class="footer-center">
 				<div>
 					<p>Liên hệ</p>
 				</div>
 				<div>
-					<i class="material-icons">email</i>
-					<p><span>quangbao1994@gmail.com</span></p><br>
 					<i class="material-icons">group</i>
-					<p><span>fb.com/svPDU</span></p>
+					<p><span>fb.com/codeW.net</span></p>
 				</div>
 			</div>
 			<div class="footer-right">
@@ -129,8 +123,9 @@
 					<span>Thông tin</span> Website đang chạy thử nghiệm với mã nguồn xây dựng bằng Angular 2
 				</p>
 			</div>
-		</footer>
-	</div>
+		</div>
+
+	</footer>
 	</div>
 </md-sidenav-layout>
 <router-outlet></router-outlet>

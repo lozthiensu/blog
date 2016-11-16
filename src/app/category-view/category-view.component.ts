@@ -56,9 +56,16 @@ export class CategoryViewComponent implements OnInit {
   page: number = 1; //So trang cua danh sach bai viet
   total: number;  //Tong so bai viet cua danh sach bai viet
   tuKhoaTim: string; //Tu khoa tim kiem
-
+  getTitle: string;
   //Khoi tao du lieu khi xem trang web nay
   ngOnInit() {
+    this._blogService.Setting().subscribe(
+      data => {
+        this.getTitle = data.First;
+      },
+      error => console.log("Error HTTP Post Service"),
+      () => console.log("Get title setting done !")
+    );
     this._route.params.forEach((params: Params) => {
       this.idCategory = +params['id'];
     });
@@ -178,7 +185,7 @@ export class CategoryViewComponent implements OnInit {
         }
         this.total = data.total;
         this.tenDanhMuc = data.tenDanhMuc;
-        this._titleService.setTitle( this.tenDanhMuc + ' - svPDU');
+        this._titleService.setTitle( this.tenDanhMuc + ' - ' + this.getTitle);
       },
       error => console.log("Error HTTP Post Service"),
       () => console.log("Get thread most view Done !")
@@ -200,7 +207,7 @@ export class CategoryViewComponent implements OnInit {
     slug = slug.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, 'u');
     slug = slug.replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, 'y');
     slug = slug.replace(/đ/gi, 'd');
-    slug = slug.replace(/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi, '');
+    slug = slug.replace(/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|\[|\]|\{|\}|_/gi, '');
     slug = slug.replace(/ /gi, "-");
     slug = slug.replace(/\-\-\-\-\-/gi, '-');
     slug = slug.replace(/\-\-\-\-/gi, '-');

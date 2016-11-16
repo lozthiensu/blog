@@ -70,9 +70,18 @@ export class ThreadViewComponent implements OnInit {
   commentsByThread: Observable<Comment[]>; //Danh sach comment
   idThread: number = 1; //ID cua bai viet dang xem
   tuKhoaTim: string; //Tu khoa tim kiem
+  idVideo: string;  //Id video youtube
+  getTitle: string;
 
   //Khoi tao du lieu khi xem trang web nay
   ngOnInit() {
+    this._blogService.Setting().subscribe(
+      data => {
+        this.getTitle = data.First;
+      },
+      error => console.log("Error HTTP Post Service"),
+      () => console.log("Get title setting done !")
+    );
     this._route.params.forEach((params: Params) => {
       this.idThread = +params['id'];
     });
@@ -98,7 +107,6 @@ export class ThreadViewComponent implements OnInit {
   }
 
   //Doan code xem video youtube chua co dinh.
-  id = 'OEpsaATevxw';
 
   //Khai bao player va cac bien boolean
   private player;
@@ -326,13 +334,20 @@ export class ThreadViewComponent implements OnInit {
     this._blogService.Thread({ Command: "getThreadByID", Id: id }).subscribe(
       data => {
         this.threadView = [];
-        this.threadView.push(new Thread(0, data.items[0].ID, data.items[0].Name, data.items[0].Intro, data.items[0].ImageThumb, data.items[0].Time, data.items[0].View, data.items[0].NumberOfComment, data.items[0].Content, data.items[0].Tag, data.items[0].Category, data.items[0].CategoryName, data.items[0].Author, data.items[0].AuthorAvatar));
+        this.threadView.push(new Thread(0, data.items[0].ID, data.items[0].Name, data.items[0].Intro, data.items[0].ImageThumb, data.items[0].Time, data.items[0].View, data.items[0].NumberOfComment, data.items[0].Content, data.items[0].Tag, data.items[0].Category, data.items[0].CategoryName, data.items[0].Author, data.items[0].AuthorAvatar, data.items[0].Introduce));
+        if ( data.items[0].Youtube != "" ) {
+          var temp = data.items[0].Youtube.split("=");
+          this.idVideo = temp[1];
+        }
+        else{
+            this.idVideo = null;
+        }
         var array = JSON.parse(data.items[0].Tag);
         this.tags = [];
         for (var i = 0; i < array.length; i++) {
           this.tags.push(new Tag(i, array[i]));
         }
-        this._titleService.setTitle(this.threadView[0].name + ' - svPDU');
+        this._titleService.setTitle(this.threadView[0].name + ' - ' + this.getTitle);
       },
       error => console.log("Error HTTP Post Service"),
       () => console.log("Get thread by id Done !")
@@ -374,7 +389,7 @@ export class ThreadViewComponent implements OnInit {
     slug = slug.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, 'u');
     slug = slug.replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, 'y');
     slug = slug.replace(/đ/gi, 'd');
-    slug = slug.replace(/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi, '');
+    slug = slug.replace(/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|\[|\]|\{|\}|_/gi, '');
     slug = slug.replace(/ /gi, "-");
     slug = slug.replace(/\-\-\-\-\-/gi, '-');
     slug = slug.replace(/\-\-\-\-/gi, '-');

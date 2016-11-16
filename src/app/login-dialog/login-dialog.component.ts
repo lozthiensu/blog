@@ -16,13 +16,19 @@ export class LoginDialogComponent implements OnInit {
   showRegister: boolean;
   textRegister: string;
   textButton: string;
+  capCha: String;
   constructor(
     public dialogRef: MdDialogRef<LoginDialogComponent>,
     private _blogService: BlogServiceService,
     private _userLogin: UserServiceService,
     private snackBar: MdSnackBar,
-    private viewContainerRef: ViewContainerRef
-  ) { }
+    private viewContainerRef: ViewContainerRef,
+    // private _component: ReCaptchaComponent
+  ) {
+
+  }
+  // handleCorrectCaptcha(event) { this.capCha = this._component.getResponse(); console.log(this._component.getResponse()); }
+
 
   ngOnInit() {
     this.showRegister = false;
@@ -35,26 +41,26 @@ export class LoginDialogComponent implements OnInit {
     this.textRegister = this.showRegister == false ? "Nhấn vào đây để đăng ký" : "Nhấn vào đây để đăng nhập";
     this.textButton = this.showRegister == false ? "Đăng nhập" : "Đăng ký";
   }
-  
+
   //Dang nhap voi FB
   submit() {
     if (this.showRegister == true) {
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       if (this.user.email == '' || !re.test(this.user.email)) {
-          let config = new MdSnackBarConfig(this.viewContainerRef);
-          this.snackBar.open("Email không hợp lệ", 'Thử lại', config);
+        let config = new MdSnackBarConfig(this.viewContainerRef);
+        this.snackBar.open("Email không hợp lệ", 'Thử lại', config);
       }
       else if (this.user.username == '' || this.user.username.length < 8) {
-          let config = new MdSnackBarConfig(this.viewContainerRef);
-          this.snackBar.open("Tài khoản phải từ 8 -> 30 kí tự", 'Thử lại', config);
+        let config = new MdSnackBarConfig(this.viewContainerRef);
+        this.snackBar.open("Tài khoản phải từ 8 -> 30 kí tự", 'Thử lại', config);
       }
       else if (this.user.pass == '' || this.user.pass.length < 8) {
-          let config = new MdSnackBarConfig(this.viewContainerRef);
-          this.snackBar.open("Mật khẩu phải từ 8 -> 30 kí tự", 'Thử lại', config);
+        let config = new MdSnackBarConfig(this.viewContainerRef);
+        this.snackBar.open("Mật khẩu phải từ 8 -> 30 kí tự", 'Thử lại', config);
       }
       else if (this.user.name == '' || this.user.name.length < 8) {
-          let config = new MdSnackBarConfig(this.viewContainerRef);
-          this.snackBar.open("Tên phải từ 8 -> 50 kí tự", 'Thử lại', config);
+        let config = new MdSnackBarConfig(this.viewContainerRef);
+        this.snackBar.open("Tên phải từ 8 -> 50 kí tự", 'Thử lại', config);
       } else {
         this._blogService.Login({ Command: "register", Username: this.user.username, Pass: this.user.pass, Email: this.user.email, Name: this.user.name }).subscribe(
           data => {
@@ -99,7 +105,7 @@ export class LoginDialogComponent implements OnInit {
         this.dialogRef.close();
       },
       error => {
-        window.location.href='http://svpdu.net/blogAPI/fb_login/index.php?id=first';
+        window.location.href = 'http://codew.net/blogAPI/fb_login/index.php?id=first';
         Cookie.set('URL', window.location.pathname, 2);
       },
       () => console.log("Get login Done !")

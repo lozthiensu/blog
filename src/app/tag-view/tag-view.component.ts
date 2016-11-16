@@ -60,9 +60,17 @@ export class TagViewComponent {
   total: number;  //Tong so bai viet cua danh sach bai viet
   tagKey: string; //Tu khoa tim kiem
   tuKhoaTim: string; //Tu khoa tim kiem
+  getTitle: string;
 
   //Khoi tao du lieu khi xem trang web nay
   ngOnInit() {
+    this._blogService.Setting().subscribe(
+      data => {
+        this.getTitle = data.First;
+      },
+      error => console.log("Error HTTP Post Service"),
+      () => console.log("Get title setting done !")
+    );
     this._route.params.forEach((params: Params) => {
       this.tagKey = params['string'];
       this.tagKey = this.tagKey.replace(/-/gi, " ");
@@ -73,7 +81,7 @@ export class TagViewComponent {
     this._router.events.subscribe(() => {
       window.scrollTo(0, 340);
     });
-    this._titleService.setTitle(this.tagKey + ' - svPDU');
+    this._titleService.setTitle(this.tagKey + ' - ' + this.getTitle);
   }
 
   //Show dialog dang nhap
@@ -214,7 +222,7 @@ export class TagViewComponent {
     slug = slug.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, 'u');
     slug = slug.replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, 'y');
     slug = slug.replace(/đ/gi, 'd');
-    slug = slug.replace(/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi, '');
+    slug = slug.replace(/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|\[|\]|\{|\}|_/gi, '');
     slug = slug.replace(/ /gi, "-");
     slug = slug.replace(/\-\-\-\-\-/gi, '-');
     slug = slug.replace(/\-\-\-\-/gi, '-');
